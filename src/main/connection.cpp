@@ -73,6 +73,7 @@ unique_ptr<QueryResult> Connection::SendQuery(const string &query) {
 
 unique_ptr<MaterializedQueryResult> Connection::Query(const string &query) {
 	auto result = context->Query(query, false);
+	std::cout << "Querying DuckDB" << std::endl;
 	D_ASSERT(result->type == QueryResultType::MATERIALIZED_RESULT);
 	return unique_ptr_cast<QueryResult, MaterializedQueryResult>(std::move(result));
 }

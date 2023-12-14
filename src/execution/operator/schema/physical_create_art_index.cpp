@@ -1,3 +1,5 @@
+// #include <iostream>
+
 #include "duckdb/execution/operator/schema/physical_create_art_index.hpp"
 
 #include "duckdb/catalog/catalog_entry/duck_table_entry.hpp"
@@ -11,6 +13,8 @@
 #include "duckdb/execution/index/art/art_key.hpp"
 #include "duckdb/execution/index/art/node.hpp"
 #include "duckdb/execution/index/art/leaf.hpp"
+
+// #include "/users/mthevend/mnt/CloudStorage/midhush/ramulator-pim/zsim-ramulator/misc/hooks/zsim_hooks.h"
 
 namespace duckdb {
 
@@ -121,6 +125,11 @@ SinkResultType PhysicalCreateARTIndex::SinkSorted(Vector &row_identifiers, Opera
 SinkResultType PhysicalCreateARTIndex::Sink(ExecutionContext &context, DataChunk &chunk,
                                             OperatorSinkInput &input) const {
 
+	// std::cout << "Indexing\n";
+
+	// zsim_roi_begin();
+	// zsim_PIM_function_begin();
+
 	D_ASSERT(chunk.ColumnCount() >= 2);
 
 	// generate the keys for the given input
@@ -132,8 +141,18 @@ SinkResultType PhysicalCreateARTIndex::Sink(ExecutionContext &context, DataChunk
 	// insert the keys and their corresponding row IDs
 	auto &row_identifiers = chunk.data[chunk.ColumnCount() - 1];
 	if (sorted) {
+		// auto x = SinkSorted(row_identifiers, input);
+
+		// zsim_PIM_function_end();
+		// zsim_roi_end();
+
 		return SinkSorted(row_identifiers, input);
 	}
+	// auto x = SinkUnsorted(row_identifiers, input);
+
+	// zsim_PIM_function_end();
+	// zsim_roi_end();
+
 	return SinkUnsorted(row_identifiers, input);
 }
 

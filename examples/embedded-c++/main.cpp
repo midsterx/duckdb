@@ -7,8 +7,6 @@ int main() {
 
 	Connection con(db);
 
-	con.Query("CREATE TABLE integers(i INTEGER)");
-	con.Query("INSERT INTO integers VALUES (3)");
-	auto result = con.Query("SELECT * FROM integers");
-	result->Print();
+	con.Query("CREATE TABLE spotify AS FROM read_csv_auto('dataset.csv')");
+	auto result = con.Query("SELECT * FROM spotify ORDER BY duration_ms DESC");
 }

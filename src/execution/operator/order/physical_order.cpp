@@ -1,3 +1,5 @@
+// #include <iostream>
+
 #include "duckdb/execution/operator/order/physical_order.hpp"
 
 #include "duckdb/common/sort/sort.hpp"
@@ -6,6 +8,8 @@
 #include "duckdb/parallel/base_pipeline_event.hpp"
 #include "duckdb/parallel/event.hpp"
 #include "duckdb/storage/buffer_manager.hpp"
+
+// #include "/users/mthevend/mnt/CloudStorage/midhush/ramulator-pim/zsim-ramulator/misc/hooks/zsim_hooks.h"
 
 namespace duckdb {
 
@@ -70,6 +74,11 @@ unique_ptr<LocalSinkState> PhysicalOrder::GetLocalSinkState(ExecutionContext &co
 }
 
 SinkResultType PhysicalOrder::Sink(ExecutionContext &context, DataChunk &chunk, OperatorSinkInput &input) const {
+	// std::cout << "Sorting\n";
+
+	// zsim_roi_begin();
+	// zsim_PIM_function_begin();
+
 	auto &gstate = input.global_state.Cast<OrderGlobalSinkState>();
 	auto &lstate = input.local_state.Cast<OrderLocalSinkState>();
 
@@ -98,6 +107,10 @@ SinkResultType PhysicalOrder::Sink(ExecutionContext &context, DataChunk &chunk, 
 	if (local_sort_state.SizeInBytes() >= gstate.memory_per_thread) {
 		local_sort_state.Sort(global_sort_state, true);
 	}
+
+	// zsim_PIM_function_end();
+	// zsim_roi_end();
+
 	return SinkResultType::NEED_MORE_INPUT;
 }
 
